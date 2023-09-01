@@ -1,0 +1,5 @@
+package com.gis.serviceimp;
+
+public class ProductServiceImpl {
+
+}

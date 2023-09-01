@@ -1,0 +1,35 @@
+package com.gis.test;
+
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.gis.entity.EmpEntity;
+import com.gis.repo.EmpRepo;
+import com.gis.service.EmpServiceImpl;
+
+import in.gis.binding.Course;
+
+@SpringBootTest
+public class EmpServiceImplTest {
+		@InjectMocks//to create class instances that need to be tested in the test class
+		private EmpServiceImpl empServiceImpl;
+		@Mock
+		private EmpRepo empRepo;
+	@Test
+		public void testSaveEmp() {
+			EmpEntity entity =new EmpEntity(1,"Siva",99.8);
+			boolean saveEmp = empServiceImpl.saveEmp(entity);
+			Mockito.verify(empRepo,Mockito.times(1)).save(entity);	
+		}
+	@Test
+	void testUpdateCourse() {
+		Course course = new Course(100, "Java", 669.9);
+		courseServiceImpl.upsert(course);
+		Mockito.verify(courseRepository, Mockito.times(1)).save(course);
+	}
+
+		
+}

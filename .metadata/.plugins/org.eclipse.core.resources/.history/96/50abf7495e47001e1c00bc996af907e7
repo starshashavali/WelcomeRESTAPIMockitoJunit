@@ -1,0 +1,65 @@
+package com.gis.service;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.gis.dto.EmpDto;
+import com.gis.entity.EmpEntity;
+import com.gis.repo.EmpRepo;
+
+@Service
+public class EmpServiceImpl implements EmpService {
+	@Autowired
+	private EmpRepo empRepo;
+
+	@Override
+	public boolean saveEmp(EmpDto empDto) {
+
+		Optional<EmpEntity> findById = empRepo.findById(empDto.getEmpId());
+		if (findById != null) {
+			EmpEntity entity = new EmpEntity();
+			BeanUtils.copyProperties(empDto, entity);
+			EmpEntity save = empRepo.save(entity);
+			return true;
+
+		}
+
+		EmpEntity entity = new EmpEntity();
+		BeanUtils.copyProperties(empDto, entity);
+		EmpEntity saveEmpObj = empRepo.save(entity);
+
+		if (saveEmpObj != null) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public EmpEntity getEmpById(Integer id) {
+		Optional<EmpEntity> findById = empRepo.findById(id);
+		if(findById.isPresent()) {
+			EmpEntity empEntity = findById.get();
+			return empEntity;
+		}
+		return null;
+	}
+
+	@Override
+	public List<EmpEntity> getAllEmps() {
+		return empRepo.findAll();
+		  
+	}
+
+	@Override
+	public String deleteEmpById(Integer id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

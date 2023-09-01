@@ -1,0 +1,39 @@
+package com.gis.restcontroller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.gis.binding.CountryEntity;
+import com.gis.service.CountryService;
+
+@RestController
+public class CountryController {
+	@Autowired
+	private CountryService countryService;
+
+	@PostMapping("/saveRecord")
+	public String saveRecord(@RequestBody CountryEntity countryEntity) {
+		boolean status = countryService.upsert(countryEntity);
+		if (status) {
+			
+
+		}
+		return "save record";
+
+	}
+	@GetMapping("/id")
+	public void  getRecord(@PathVariable Integer id) {
+		String country = countryService.getCountry(id);
+	}
+	
+	@DeleteMapping("/id")
+	public void  deleteById(@PathVariable Integer id ) {
+		
+	}
+
+}

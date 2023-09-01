@@ -1,0 +1,18 @@
+package com.gis.restcontroller;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class WelMsg {
+	
+	
+	@GetMapping("/wel")
+	public ResponseEntity<String> getMsg(){
+		String status="Welcome to JUNIT...";
+		return new ResponseEntity<String>(status,HttpStatus.OK);
+	}
+
+}

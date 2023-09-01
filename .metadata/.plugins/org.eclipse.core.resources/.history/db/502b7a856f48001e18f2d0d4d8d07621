@@ -1,0 +1,136 @@
+package in.gis.test;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import in.gis.binding.Course;
+import in.gis.rest.CourseRestController;
+import in.gis.service.CourseService;
+
+@WebMvcTest(value=CourseRestController.class)
+public class CourseRestControllerTest {
+	@Autowired
+	private MockMvc mockMvc;
+	@MockBean
+	private CourseService courseService;
+
+	@Test
+	public void testCreateCourse() throws Exception {
+		Course mockCourse = new Course(109, "Math", 299.9);
+		when(courseService.upsert(Mockito.any(Course.class))).thenReturn("Course created");
+
+		mockMvc
+				.perform(MockMvcRequestBuilders.post("/course").
+						contentType(MediaType.APPLICATION_JSON)
+						.content(asJsonString(mockCourse)))
+				.andExpect(MockMvcResultMatchers.status().isCreated())
+				.andExpect(MockMvcResultMatchers.content().string("Course created"));
+		
+	}
+
+	@Test
+	public void testUpdateCourse() throws Exception {
+		Course mockCourse = new Course(102, "Math", 99.8);
+		when(courseService.upsert(Mockito.any(Course.class))).thenReturn("Course updated");
+
+		mockMvc.perform(MockMvcRequestBuilders.put("/course").contentType(MediaType.APPLICATION_JSON)
+				.content(asJsonString(mockCourse)))
+		         .andExpect(MockMvcResultMatchers.status().isOk())
+				.andExpect(MockMvcResultMatchers.content().string("Course updated"));
+	}
+
+	// Utility method to convert an object to JSON
+	private String asJsonString(final Object obj) {
+		try {
+			return new ObjectMapper().writeValueAsString(obj);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Test
+	void testGetAllCourses() throws Exception {
+		// Arrange
+		List<Course> mockCourseList = new ArrayList<>();
+		mockCourseList.add(new Course(100, "Python", 669.9));
+		mockCourseList.add(new Course(101, "JSE", 666.9));
+		when(courseService.getAllCourses()).thenReturn(mockCourseList);
+
+		// Act & Assert
+		mockMvc.perform(get("/courses")).andExpect(status().isOk()).andExpect(jsonPath("$.length()").value(2)); // Assuming
+																												// JSON
+																												// //
+																												// array
+																												// // i
+																												// //
+																												// returned
+	}
+
+	@Test
+	void testgetCoursePositive() throws Exception {
+		Course mockCourse = new Course(1, "Python", 669.9);
+		when(courseService.getById(1)).thenReturn(mockCourse);
+
+		// Act & Assert
+		mockMvc.perform(MockMvcRequestBuilders.get("/course/{cid}", 1)
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.cid").value(1))
+				.andExpect(jsonPath("$.name").value("Python"))
+				.andExpect(jsonPath("$.price").value(669.9));
+	}
+	@Test
+	void TestCourseNegative() throws Exception{
+		Course course= new Course(1,"Java",699.9);
+		when(courseService.getById(100)).thenReturn(course);
+		
+		mockMvc.perform(MockMvcRequestBuilders.get("/course/{cid}",-1)
+				.contentType(MediaType.APPLICATION_JSON)
+				).andExpect(status().isOk())
+		.andExpect(jsonPath("$.cid").value(1))
+		.andExpect(jsonPath("$.name").value("Java"))
+		.andExpect(jsonPath("$.price").value(699.9));
+		
+		
+	}
+	
+
+	@Test
+	void testDeleteCourse() throws Exception {
+		// Arrange
+		when(courseService.deleteById(1)).thenReturn("Deleted successfully");
+
+		// Act & Assert
+		mockMvc.perform(delete("/course/{cid}", 1).
+				contentType(MediaType.APPLICATION_JSON))
+		.andExpect(status().isOk())
+		.andExpect(content().string("Deleted successfully"));
+
+		/*
+		 * int status =
+		 * mockMvc.perform(MockMvcRequestBuilders.get("/welcome")).andReturn().
+		 * getResponse().getStatus(); assertEquals(200, status);
+		 */
+	}
+
+}

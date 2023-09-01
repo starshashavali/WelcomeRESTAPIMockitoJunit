@@ -1,0 +1,26 @@
+package com.gis.entity;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Table
+@Entity
+@Table(name="Order_Tbl_dtls")
+@AllArgsConstructor
+@NoArgsConstructor
+public class OrderEntity {
+	@Id
+	@GeneratedValue
+	private Integer orderId;
+	private String orderName;
+	private Double price;
+	
+
+}

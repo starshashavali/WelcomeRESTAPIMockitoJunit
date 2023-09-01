@@ -1,0 +1,102 @@
+package com.gis.test;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.Optional;
+
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.gis.entity.EmpEntity;
+import com.gis.repo.EmpRepo;
+import com.gis.service.EmpServiceImpl;
+
+@SpringBootTest
+public class EmpServiceImplTest {
+		@InjectMocks//to create class instances that need to be tested in the test class
+		private EmpServiceImpl empServiceImpl;
+		@Mock
+		private EmpRepo empRepo;
+		
+    @Test
+    public void testSaveEmpSuccess() {
+        EmpEntity entity = new EmpEntity(); // Create a sample entity
+
+        Mockito.when(empRepo.save(Mockito.any(EmpEntity.class))).thenReturn(entity);
+
+        boolean result = empServiceImpl.saveEmp(entity);
+
+        assertTrue(result); // The saveEmp method should return true
+        Mockito.verify(empRepo, Mockito.times(1)).save(entity);
+    }
+
+    @Test
+    public void testSaveEmpFailure() {
+        Mockito.when(empRepo.save(Mockito.any(EmpEntity.class))).thenReturn(null);
+
+        boolean result = empServiceImpl.saveEmp(new EmpEntity());
+
+        assertFalse(result); // The saveEmp method should return false
+        Mockito.verify(empRepo, Mockito.times(1)).save(Mockito.any(EmpEntity.class));
+    }
+
+    @Test
+    public void testUpdateEmpSuccess() {
+        EmpEntity empDto = new EmpEntity(1, "UpdatedName", 1500.0);
+        EmpEntity existingEntity = new EmpEntity(1, "OriginalName", 1000.0);
+
+        Mockito.when(empRepo.findById(empDto.getEmpId())).thenReturn(Optional.of(existingEntity));
+        Mockito.when(empRepo.save(Mockito.any(EmpEntity.class))).thenReturn(empDto);
+
+        boolean result = empServiceImpl.updateEmp(empDto);
+
+        assertTrue(result); // The updateEmp method should return true
+        Mockito.verify(empRepo, Mockito.times(1)).findById(empDto.getEmpId());
+        Mockito.verify(empRepo, Mockito.times(1)).save(Mockito.any(EmpEntity.class));
+    }
+
+    @Test
+    public void testUpdateEmpFailure() {
+        EmpEntity empDto = new EmpEntity(1, "UpdatedName", 1500.0);
+
+        Mockito.when(empRepo.findById(empDto.getEmpId())).thenReturn(Optional.empty());
+
+        boolean result = empServiceImpl.updateEmp(empDto);
+
+        assertFalse(result); // The updateEmp method should return false
+        Mockito.verify(empRepo, Mockito.times(1)).findById(empDto.getEmpId());
+        Mockito.verify(empRepo, Mockito.times(0)).save(Mockito.any(EmpEntity.class));
+    }
+
+    @Test
+    public void testUpdateEmp_Success() {
+        EmpEntity empDto = new EmpEntity(1, "UpdatedName", 1500.0);
+        EmpEntity existingEntity = new EmpEntity(1, "OriginalName", 1000.0);
+
+        Mockito.when(empRepo.findById(empDto.getEmpId())).thenReturn(Optional.of(existingEntity));
+        Mockito.when(empRepo.save(Mockito.any(EmpEntity.class))).thenReturn(empDto);
+
+        boolean result = empServiceImpl.updateEmp(empDto);
+
+        assertTrue(result); // The updateEmp method should return true
+        Mockito.verify(empRepo, Mockito.times(1)).findById(empDto.getEmpId());
+        Mockito.verify(empRepo, Mockito.times(1)).save(Mockito.any(EmpEntity.class));
+    }
+
+    @Test
+    public void testUpdateEmp_Failure() {
+        EmpEntity empDto = new EmpEntity(1, "UpdatedName", 1500.0);
+
+        Mockito.when(empRepo.findById(empDto.getEmpId())).thenReturn(Optional.empty());
+
+        boolean result = empServiceImpl.updateEmp(empDto);
+
+        assertFalse(result); // The updateEmp method should return false
+        Mockito.verify(empRepo, Mockito.times(1)).findById(empDto.getEmpId());
+        Mockito.verify(empRepo, Mockito.times(0)).save(Mockito.any(EmpEntity.class));
+    }	
+}

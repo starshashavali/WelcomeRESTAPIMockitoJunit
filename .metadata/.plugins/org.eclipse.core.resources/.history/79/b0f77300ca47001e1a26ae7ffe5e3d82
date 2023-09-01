@@ -1,0 +1,24 @@
+package com.gis.test;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.web.servlet.MockMvc;
+
+import com.gis.restcontroller.EmpController;
+import com.gis.service.EmpService;
+
+@WebMvcTest(EmpController.class)
+public class EmpControllerTest {
+
+		@Autowired
+		private MockMvc mockMvc;
+		@MockBean
+		private EmpService empService;
+		
+		
+		
+		
+		
+   }
+

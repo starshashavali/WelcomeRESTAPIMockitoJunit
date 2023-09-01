@@ -1,0 +1,75 @@
+package com.gis.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.gis.entity.EmpEntity;
+import com.gis.repo.EmpRepo;
+
+@Service
+public class EmpServiceImpl implements EmpService {
+	@Autowired
+	private EmpRepo empRepo;
+
+	@Override
+	public boolean saveEmp(EmpEntity empDto) {
+
+		EmpEntity entity = new EmpEntity();
+		EmpEntity saveEmpObj = empRepo.save(entity);
+
+		if (saveEmpObj != null) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean updateEmp(EmpEntity empDto) {
+	    Optional<EmpEntity> optionalEntity = empRepo.findById(empDto.getEmpId());
+
+	    if (optionalEntity.isPresent()) {
+	        EmpEntity existingEntity = optionalEntity.get();
+	        // Update the fields of existingEntity with the data from empDto
+	        // For example: existingEntity.setName(empDto.getName());
+	        
+	        empRepo.save(existingEntity); // Save the updated entity
+	        return true;
+	    } else {
+	        return false; // Employee with empId not found
+	    }
+	}
+
+
+	@Override
+	public EmpEntity getEmpById(Integer id) {
+		Optional<EmpEntity> findById = empRepo.findById(id);
+		if (findById.isPresent()) {
+			EmpEntity empEntity = findById.get();
+			return empEntity;
+		}
+		return null;
+	}
+
+	@Override
+	public List<EmpEntity> getAllEmps() {
+		return empRepo.findAll();
+
+	}
+
+	@Override
+	public boolean deleteEmpById(Integer empId) {
+		Optional<EmpEntity> employeeOptional = empRepo.findById(empId);
+
+		if (employeeOptional.isPresent()) {
+			empRepo.deleteById(empId);
+			return true;
+		} else {
+			return false; // Employee with empId not found
+		}
+	}
+
+}

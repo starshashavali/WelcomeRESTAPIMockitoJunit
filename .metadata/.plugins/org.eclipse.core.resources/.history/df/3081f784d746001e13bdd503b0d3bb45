@@ -1,0 +1,9 @@
+package com.gis.bean;
+
+public class MyApp {
+	public static void main(String[] args) {
+		Calculator calculator= new Calculator();
+		
+	}
+
+}

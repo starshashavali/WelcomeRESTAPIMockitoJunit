@@ -1,0 +1,32 @@
+package com.gis.restcontroller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.gis.entity.ProductEntity;
+import com.gis.service.ProductService;
+
+@RestController
+public class ProductRestController {
+	@Autowired
+	ProductService ProductService;
+	@PostMapping("/save")
+	public ResponseEntity<String> saveProduct(@RequestBody ProductEntity productEntity){
+		
+		boolean saveProduct = ProductService.saveProduct(productEntity);
+		if(saveProduct) {
+			return new ResponseEntity<String>("Success",HttpStatus.CREATED);
+		}
+		return new ResponseEntity<String>("Fail to save",HttpStatus.BAD_REQUEST);
+	}
+	
+	
+	
+	
+	
+
+}

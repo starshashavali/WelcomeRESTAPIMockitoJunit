@@ -1,0 +1,24 @@
+package com.gis.service;
+
+import com.gis.entity.BookEntity;
+
+public interface BookService {
+	
+	public boolean saveBook(BookEntity bookEntity);
+	
+	public boolean updateBookDtls(BookEntity bookEntity);
+	
+	public BookEntity getBookId(Integer id);
+	
+	public String deleteBookById(Integer id);
+	
+	
+
+	
+	
+	
+	
+		
+	
+
+}

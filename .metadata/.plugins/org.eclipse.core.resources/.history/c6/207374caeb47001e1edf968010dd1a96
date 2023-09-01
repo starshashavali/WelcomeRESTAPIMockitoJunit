@@ -1,0 +1,28 @@
+package com.gis.test;
+
+import static org.mockito.Mockito.when;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+
+import com.gis.restcontroller.WelMsgRestController;
+import com.gis.service.WelService;
+
+@WebMvcTest(value=WelMsgRestController.class)
+public class WelMsgRestControllerTest {
+	
+	
+	@MockBean
+	private WelService welService;
+	
+	
+	@Test
+	public void testgetMsg() {
+		when(welService.welMsg()).thenReturn("Good morning....");
+	}
+	
+	
+	
+
+}

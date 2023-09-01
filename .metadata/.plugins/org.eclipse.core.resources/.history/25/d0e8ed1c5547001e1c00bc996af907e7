@@ -1,0 +1,16 @@
+package com.gis.service;
+
+import com.gis.dto.EmpDto;
+
+public interface EmpService {
+
+	public boolean saveEmp(EmpDto empDto);
+
+
+	public EmpDto getEmpById(Integer id);
+
+	public EmpDto getAllEmps();
+
+	public String deleteEmpById(Integer id);
+
+}

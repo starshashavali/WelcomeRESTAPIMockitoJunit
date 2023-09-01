@@ -1,0 +1,40 @@
+package com.gis.service;
+
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.gis.entity.CountryEntity;
+import com.gis.repo.CountryRepo;
+
+@Service
+public class CountryServiceImpl implements CountryService {
+	@Autowired
+	private CountryRepo countryRepo;
+
+	@Override
+	public String upsert(CountryEntity countryEntity) {
+		
+		countryRepo.save(countryEntity);
+		
+
+	
+		return null;
+	}
+
+	@Override
+	public String deleteCountry(Integer cid) {
+		Optional<CountryEntity> findById = countryRepo.findById(cid);
+		CountryEntity countryEntity = findById.get();
+		return "deleted Success";
+	}
+
+	@Override
+	public String getCountry(Integer cid) {
+		Optional<CountryEntity> findById = countryRepo.findById(cid);
+		CountryEntity countryEntity = findById.get();
+		return "Record successfully ";
+	}
+
+}

@@ -1,0 +1,85 @@
+package in.gis.test;
+
+import static org.junit.Assert.assertEquals;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import in.gis.binding.Course;
+import in.gis.repo.CourseRepository;
+import in.gis.service.CourseServiceImpl;
+
+@SpringBootTest
+public class CourseServiceImplTest {
+	@InjectMocks
+	private CourseServiceImpl courseServiceImpl;
+	@Mock
+	private CourseRepository courseRepository;
+
+	@Test
+	void testCourseSave() {
+		Course course = new Course();
+		course.setCid(100);
+		course.setName("Java");
+		course.setPrice(99.9);
+		courseServiceImpl.upsert(course);
+		Mockito.verify(courseRepository, Mockito.times(1)).save(course);
+
+	}
+
+	@Test
+	void testUpdateCourse() {
+		Course course = new Course(100, "Java", 669.9);
+		courseServiceImpl.upsert(course);
+		Mockito.verify(courseRepository, Mockito.times(1)).save(course);
+	}
+
+	@Test
+	public void  testGetById() {
+		Integer id=3;
+		Course course = new Course(100, "Java", 669.9);
+       // when(courseRepository.findById(1)).thenReturn(course);
+        Course byId = courseServiceImpl.getById(id);
+        Optional<Course>s=Optional.of(course);
+        Mockito.when(courseRepository.findById(id)).thenReturn(s);
+        Course coursebj=courseServiceImpl.getById(id);
+	}
+	@Test
+	 void testGetAllCourses() {
+	        // Arrange
+	        List<Course> mockCourseList = new ArrayList<>();
+	        mockCourseList.add(new Course(100, "Python", 669.9));
+	        mockCourseList.add(new Course(100, "JSE", 666.9));
+	        when(courseRepository.findAll()).thenReturn(mockCourseList);
+
+	        // Act
+	        List<Course> result = courseServiceImpl.getAllCourses();
+
+	        // Assert
+	        assertEquals(2, result.size()); // Assuming two mock courses were added
+	        assertEquals(mockCourseList, result);
+	        Mockito.verify(courseRepository, Mockito.times(1)).findAll();
+	}
+
+
+	@Test
+	void deleteByIdCourse() {
+		Course course = new Course();
+		course.setCid(106);
+		course.setName("Python");
+		course.setPrice(999.0);
+		courseServiceImpl.deleteById(course.getCid());
+		Mockito.verify(courseRepository, Mockito.times(1));
+	}
+
+	
+	
+}

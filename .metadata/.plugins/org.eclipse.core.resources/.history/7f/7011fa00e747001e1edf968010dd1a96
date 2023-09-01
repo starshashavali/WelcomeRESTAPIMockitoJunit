@@ -1,0 +1,9 @@
+package com.gis.service;
+
+public class WelService {
+	
+	public String welMsg() {
+		return "Welcome to Junit 5 Learning ...";
+	}
+
+}

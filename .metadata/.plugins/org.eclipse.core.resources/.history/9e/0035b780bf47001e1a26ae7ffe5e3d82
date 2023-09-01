@@ -1,0 +1,45 @@
+package com.gis.test;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.gis.entity.EmpEntity;
+import com.gis.repo.EmpRepo;
+import com.gis.service.EmpServiceImpl;
+
+@SpringBootTest
+public class EmpServiceImplTest {
+		@InjectMocks//to create class instances that need to be tested in the test class
+		private EmpServiceImpl empServiceImpl;
+		@Mock
+		private EmpRepo empRepo;
+		
+    @Test
+    public void testSaveEmp_Success() {
+        EmpEntity entity = new EmpEntity(); // Create a sample entity
+
+        Mockito.when(empRepo.save(Mockito.any(EmpEntity.class))).thenReturn(entity);
+
+        boolean result = empServiceImpl.saveEmp(entity);
+
+        assertTrue(result); // The saveEmp method should return true
+        Mockito.verify(empRepo, Mockito.times(1)).save(entity);
+    }
+
+    @Test
+    public void testSaveEmp_Failure() {
+        Mockito.when(empRepo.save(Mockito.any(EmpEntity.class))).thenReturn(null);
+
+        boolean result = empServiceImpl.saveEmp(new EmpEntity());
+
+        assertFalse(result); // The saveEmp method should return false
+        Mockito.verify(empRepo, Mockito.times(1)).save(Mockito.any(EmpEntity.class));
+    }
+	
+}

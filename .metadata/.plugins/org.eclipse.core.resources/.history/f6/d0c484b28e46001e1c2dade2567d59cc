@@ -1,0 +1,13 @@
+package com.gis.service;
+
+import com.gis.binding.CountryEntity;
+
+public interface CountryService {
+
+	public boolean upsert(CountryEntity countryEntity);
+
+	public String deleteCountry(Integer cid);
+
+	public String getCountry(Integer cid);
+
+}

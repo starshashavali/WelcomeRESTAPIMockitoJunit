@@ -1,0 +1,11 @@
+package com.gis.service;
+
+import org.springframework.stereotype.Service;
+@Service
+public class WelService {
+
+	public String welMsg() {
+		return "Welcome to Junit 5 Learning ...";
+	}
+
+}

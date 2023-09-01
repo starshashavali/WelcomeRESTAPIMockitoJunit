@@ -1,0 +1,48 @@
+package com.gis.test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
+
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import com.gis.entity.EmpEntity;
+import com.gis.restcontroller.EmpController;
+import com.gis.service.EmpServiceImpl;
+
+@SpringBootTest
+public class EmpControllerTest {
+
+    @InjectMocks
+    private EmpController empController;
+
+    @Mock
+    private EmpServiceImpl empServiceImpl;
+
+    @Test
+    public void testSaveEmp_Success() {
+        EmpEntity empEntity = new EmpEntity();
+        when(empServiceImpl.saveEmp(empEntity)).thenReturn(true);
+
+        ResponseEntity<String> response = empController.saveEmp(empEntity);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals("Record inserted successfully", response.getBody());
+    }
+
+    @Test
+    public void testSaveEmp_Failure() {
+        EmpEntity empEntity = new EmpEntity();
+        when(empServiceImpl.saveEmp(empEntity)).thenReturn(false);
+
+        ResponseEntity<String> response = empController.saveEmp(empEntity);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Record not inserted", response.getBody());
+    }
+}
+

@@ -1,0 +1,17 @@
+package com.gis.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.gis.entity.BookEntity;
+import com.gis.repo.BookRepo;
+
+public class BookServiceImpl implements BookService {
+@Autowired
+private BookRepo bookRepo;
+	@Override
+	public boolean saveBook(BookEntity bookEntity) {
+		
+		return false;
+	}
+
+}

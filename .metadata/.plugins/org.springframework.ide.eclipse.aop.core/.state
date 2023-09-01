@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aop-reference-model>
+<aop-project name="Emp"/>
+<aop-project name="springboot_rest_mysql_app"/>
+<aop-project name="03_Crud"/>
+<aop-project name="01_WelcomeRestAPI"/>
+<aop-project name="ProductCrud"/>
+<aop-project name="02_BookRESTAPI"/>
+<aop-project name="04_OrderRestApi"/>
+<aop-project name="CalculatorApp"/>
+<aop-project name="Country"/>
+</aop-reference-model>

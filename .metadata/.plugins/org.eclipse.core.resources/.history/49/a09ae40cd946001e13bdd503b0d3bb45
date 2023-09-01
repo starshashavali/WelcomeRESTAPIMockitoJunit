@@ -1,0 +1,16 @@
+package com.gis.bean.test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import com.gis.bean.Calculator;
+
+public class CalculatorTest {
+	
+	public void testaddNum() {
+		Calculator Calculator = new Calculator();
+		Integer actualResult = Calculator.addNum(10, 20);
+		Integer exceptedResult=30;
+		assertEquals(exceptedResult, actualResult);
+	}
+
+}

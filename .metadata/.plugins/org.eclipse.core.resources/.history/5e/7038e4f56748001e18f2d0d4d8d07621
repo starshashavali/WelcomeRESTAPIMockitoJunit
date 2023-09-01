@@ -1,0 +1,16 @@
+package com.gis.service;
+
+import com.gis.entity.BookEntity;
+
+public interface BookService {
+	
+	public boolean saveBook(BookEntity bookEntity);
+	
+	
+	
+	
+	
+		
+	
+
+}

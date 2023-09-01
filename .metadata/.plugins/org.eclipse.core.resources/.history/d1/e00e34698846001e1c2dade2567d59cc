@@ -1,0 +1,10 @@
+package com.gis.service;
+
+import com.gis.binding.CountryEntity;
+
+public interface CountryService {
+	
+	public boolean saveCountry(CountryEntity countryEntity);
+	
+
+}

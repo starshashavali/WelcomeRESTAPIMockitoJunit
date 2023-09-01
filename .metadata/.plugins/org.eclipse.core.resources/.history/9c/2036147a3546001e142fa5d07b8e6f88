@@ -1,0 +1,48 @@
+package com.gis.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.gis.entity.ProductEntity;
+import com.gis.repo.ProductRepo;
+
+@Service
+public class ProductServiceImpl implements   ProductService{
+	@Autowired
+	private ProductRepo productRepo;
+	@Override
+	public List<ProductEntity> getAllProducts() {
+
+	        return productRepo.findAll();
+	}
+
+	@Override
+	public ProductEntity getProductById(Integer  id) {
+		 Optional<ProductEntity> findByIdObj = productRepo.findById(id);
+		 return findByIdObj.get();
+		    
+	}
+
+	@Override
+	public ProductEntity createProduct(ProductEntity product) {
+		System.out.println(product);
+		return productRepo.save(product);
+	}
+
+	@Override
+	public ProductEntity updateProduct(Integer id, ProductEntity product) {
+	    
+	    
+	        product.setPid(id);
+	        return productRepo.save(product);
+	}
+
+	@Override
+	public void deleteProduct(Integer id) {
+		productRepo.deleteById(id);		
+	}
+
+}

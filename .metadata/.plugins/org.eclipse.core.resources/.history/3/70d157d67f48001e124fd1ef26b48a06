@@ -1,0 +1,41 @@
+package com.gis;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gis.entity.ProductEntity;
+import com.gis.service.ProductService;
+
+@WebMvcTest(value=ProductRestController.class)
+class ProductRestController {
+	@Autowired
+	private MockMvc MockMvc;
+	@MockBean
+	ProductService productService;
+	
+ @Test
+	public  void testSaveProduct() throws Exception {
+	 ProductEntity entity= new ProductEntity(1,"sha",99.9);
+	 ObjectMapper mapper = new ObjectMapper();
+	 String writeValueAsString = mapper.writeValueAsString(entity);
+	when(productService.saveProduct(entity)).thenReturn(true);
+	
+	int status = MockMvc.perform(MockMvcRequestBuilders.post("/save")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content(writeValueAsString)).andReturn().getResponse().getStatus();
+	assertEquals(404, status);
+		
+		
+	}
+	
+
+}

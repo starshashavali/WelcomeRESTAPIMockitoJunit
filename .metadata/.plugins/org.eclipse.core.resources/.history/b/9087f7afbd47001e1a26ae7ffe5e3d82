@@ -1,0 +1,22 @@
+package com.gis.test;
+
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.gis.repo.EmpRepo;
+import com.gis.service.EmpServiceImpl;
+
+@SpringBootTest
+public class EmpServiceImplTest {
+		@InjectMocks//to create class instances that need to be tested in the test class
+		private EmpServiceImpl empServiceImpl;
+		@Mock
+		private EmpRepo empRepo;
+	
+		public void testSaveEmp() {
+			
+		}
+		
+		
+}

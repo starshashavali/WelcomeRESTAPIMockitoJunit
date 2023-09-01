@@ -1,0 +1,92 @@
+package com.gis.test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
+
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import com.gis.entity.EmpEntity;
+import com.gis.restcontroller.EmpController;
+import com.gis.service.EmpServiceImpl;
+
+@SpringBootTest
+public class EmpControllerTest {
+
+    @InjectMocks
+    private EmpController empController;
+
+    @Mock
+    private EmpServiceImpl empServiceImpl;
+
+    @Test
+    public void testSaveEmpSuccess() {
+        EmpEntity empEntity = new EmpEntity();
+        when(empServiceImpl.saveEmp(empEntity)).thenReturn(true);
+
+        ResponseEntity<String> response = empController.saveEmp(empEntity);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals("Record inserted successfully", response.getBody());
+    }
+
+    @Test
+    public void testSaveEmpFailure() {
+        EmpEntity empEntity = new EmpEntity();
+        when(empServiceImpl.saveEmp(empEntity)).thenReturn(false);
+
+        ResponseEntity<String> response = empController.saveEmp(empEntity);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Record not inserted", response.getBody());
+    }
+    @Test
+    public void testUpdateEmpSuccess() {
+        EmpEntity empDto = new EmpEntity();
+        when(empServiceImpl.updateEmp(empDto)).thenReturn(true);
+
+        ResponseEntity<String> response = empController.updateEmpDts(empDto);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Record updated successfully", response.getBody());
+    }
+
+    @Test
+    public void testUpdateEmpFailure() {
+        EmpEntity empDto = new EmpEntity();
+        when(empServiceImpl.updateEmp(empDto)).thenReturn(false);
+
+        ResponseEntity<String> response = empController.updateEmpDts(empDto);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Record not updated", response.getBody());
+    }
+
+    @Test
+    public void testGetEmpDtsSuccess() {
+        Integer empId = 1;
+        when(empServiceImpl.deleteEmpById(empId)).thenReturn(true);
+
+        ResponseEntity<String> response = empController.getEmpDts(empId);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("EmpId deleted successfully", response.getBody());
+    }
+
+    @Test
+    public void testGetEmpDtsFailure() {
+        Integer empId = 1;
+        when(empServiceImpl.deleteEmpById(empId)).thenReturn(false);
+
+        ResponseEntity<String> response = empController.getEmpDts(empId);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        //assertEquals("Employee with empId not found", response.getBody());
+    }
+
+}
+

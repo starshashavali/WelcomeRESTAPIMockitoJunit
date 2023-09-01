@@ -1,0 +1,9 @@
+package com.gis.bean.test;
+
+public class CalculatorTest {
+	
+	public void testaddNum() {
+		
+	}
+
+}

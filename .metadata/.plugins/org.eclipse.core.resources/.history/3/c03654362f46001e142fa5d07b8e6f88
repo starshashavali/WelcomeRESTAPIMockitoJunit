@@ -1,0 +1,42 @@
+package com.gis.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.gis.entity.ProductEntity;
+
+@Service
+public class ProductServiceImpl implements   ProductService{
+
+	@Override
+	public List<ProductEntity> getAllProducts() {
+		
+		return null;
+	}
+
+	@Override
+	public ProductEntity getProductById(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ProductEntity createProduct(ProductEntity product) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ProductEntity updateProduct(Long id, ProductEntity product) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void deleteProduct(Long id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

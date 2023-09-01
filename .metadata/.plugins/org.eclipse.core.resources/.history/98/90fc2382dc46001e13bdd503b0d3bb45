@@ -1,0 +1,40 @@
+package com.gis.bean.test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.test.context.event.annotation.AfterTestClass;
+import org.springframework.test.context.event.annotation.BeforeTestClass;
+
+import com.gis.bean.Calculator;
+
+public class CalculatorTest {
+	private static Calculator  calculator = null;
+
+	@BeforeTestClass
+	public static void init() {
+		calculator = new Calculator();
+
+	}
+
+	@AfterTestClass
+	public static void destroy() {
+		calculator = null;
+	}
+
+	@Test
+	public void testAddNum() {
+		Integer actualResult = calculator.addNum(10, 20);
+		Integer exceptedResult = 30;
+		assertEquals(exceptedResult, actualResult);
+	}
+
+	@Test
+	public void testMultiplicatinNumber() {
+		Integer actualResult = calculator.multiplicatinNumber(3, 3);
+		Integer exceptedResult = 9;
+		assertEquals(exceptedResult, actualResult);
+
+	}
+
+}

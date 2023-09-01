@@ -1,0 +1,54 @@
+package com.gis.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.gis.entity.ProductEntity;
+import com.gis.repo.ProductRepo;
+
+import in.gis.binding.Course;
+
+@Service
+public class ProductServiceImpl implements ProductService {
+	@Autowired
+	private ProductRepo productRepo;
+
+	@Override
+	public String upsert(ProductEntity course) {
+		
+	
+
+			productRepo.save(course); // upsert (insert / update based on PK)
+
+			return "success";
+		}
+
+	
+
+	@Override
+	public ProductEntity getById(Integer cid) {
+		Optional<ProductEntity> findById = productRepo.findById(cid);
+
+		if (findById.isPresent()) {
+			return findById.get();
+		}
+		return null;
+	}
+
+	@Override
+	public List<ProductEntity> getAllProducts() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String deleteById(Integer cid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
+}

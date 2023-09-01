@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="BookRestControllerTest" project="02_BookRESTAPI" tests="8" started="4" failures="0" errors="0" ignored="0">
+  <testsuite name="com.gis.test.BookRestControllerTest" incomplete="true" displayname="BookRestControllerTest" uniqueid="[engine:junit-jupiter]/[class:com.gis.test.BookRestControllerTest]">
+    <testcase name="testNegativeGetAllBookDtls" classname="com.gis.test.BookRestControllerTest" time="0.073" displayname="testNegativeGetAllBookDtls()" uniqueid="[engine:junit-jupiter]/[class:com.gis.test.BookRestControllerTest]/[method:testNegativeGetAllBookDtls()]"/>
+    <testcase name="testNegativeSavedBookRecord" classname="com.gis.test.BookRestControllerTest" time="0.089" displayname="testNegativeSavedBookRecord()" uniqueid="[engine:junit-jupiter]/[class:com.gis.test.BookRestControllerTest]/[method:testNegativeSavedBookRecord()]"/>
+    <testcase name="testBookByIdNegative" classname="com.gis.test.BookRestControllerTest" time="0.014" displayname="testBookByIdNegative()" uniqueid="[engine:junit-jupiter]/[class:com.gis.test.BookRestControllerTest]/[method:testBookByIdNegative()]"/>
+    <testcase name="testPositiveSavedBookRecord" classname="com.gis.test.BookRestControllerTest" incomplete="true" displayname="testPositiveSavedBookRecord()" uniqueid="[engine:junit-jupiter]/[class:com.gis.test.BookRestControllerTest]/[method:testPositiveSavedBookRecord()]"/>
+    <testcase name="testGetBookByIdPositive" classname="com.gis.test.BookRestControllerTest" incomplete="true" displayname="testGetBookByIdPositive()" uniqueid="[engine:junit-jupiter]/[class:com.gis.test.BookRestControllerTest]/[method:testGetBookByIdPositive()]"/>
+    <testcase name="testDeleteByIdPositive" classname="com.gis.test.BookRestControllerTest" incomplete="true" displayname="testDeleteByIdPositive()" uniqueid="[engine:junit-jupiter]/[class:com.gis.test.BookRestControllerTest]/[method:testDeleteByIdPositive()]"/>
+    <testcase name="testPositiveGetAllBookDtls" classname="com.gis.test.BookRestControllerTest" incomplete="true" displayname="testPositiveGetAllBookDtls()" uniqueid="[engine:junit-jupiter]/[class:com.gis.test.BookRestControllerTest]/[method:testPositiveGetAllBookDtls()]"/>
+    <testcase name="testDeleteByIdNegative" classname="com.gis.test.BookRestControllerTest" incomplete="true" displayname="testDeleteByIdNegative()" uniqueid="[engine:junit-jupiter]/[class:com.gis.test.BookRestControllerTest]/[method:testDeleteByIdNegative()]"/>
+  </testsuite>
+</testrun>

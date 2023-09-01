@@ -1,0 +1,179 @@
+package com.gis.test;
+
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import com.gis.entity.EmpEntity;
+import com.gis.restcontroller.EmpController;
+import com.gis.service.EmpService;
+
+@WebMvcTest(EmpController.class)
+public class EmpControllerTest {
+
+		@Autowired
+		private MockMvc mockMvc;
+		@MockBean
+		private EmpService empService;
+
+	    @Test
+	    public void testSaveEmpSuccess() throws Exception {
+	        EmpEntity empEntity = new EmpEntity();
+	        Mockito.when(empService.saveEmp(empEntity)).thenReturn(true);
+
+	        mockMvc.perform(MockMvcRequestBuilders.post("/saveEmp")
+	                .contentType(MediaType.APPLICATION_JSON)
+	                .content("{}")) // You can add the JSON content here
+	                .andExpect(MockMvcResultMatchers.status().isCreated())
+	                .andExpect(MockMvcResultMatchers.content().string("Record inserted successfully"));
+	    }
+
+	    @Test
+	    public void testSaveEmpFailure() throws Exception {
+	        EmpEntity empEntity = new EmpEntity();
+	        Mockito.when(empService.saveEmp(empEntity)).thenReturn(false);
+
+	        mockMvc.perform(MockMvcRequestBuilders.post("/saveEmp")
+	                .contentType(MediaType.APPLICATION_JSON)
+	                .content("{}")) // You can add the JSON content here
+	                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+	                .andExpect(MockMvcResultMatchers.content().string("Record not inserted"));
+	    }
+
+	    @Test
+	    public void testUpdateEmp_Success() throws Exception {
+	        EmpEntity empDto = new EmpEntity();
+	        when(empService.updateEmp(empDto)).thenReturn(true);
+
+	        mockMvc.perform(MockMvcRequestBuilders.put("/updateEmp")
+	                .contentType(MediaType.APPLICATION_JSON)
+	                .content("{}")) // You can add the JSON content here
+	                .andExpect(MockMvcResultMatchers.status().isOk())
+	                .andExpect(MockMvcResultMatchers.content().string("Record updated successfully"));
+	    }
+
+	    @Test
+	    public void testUpdateEmp_Failure() throws Exception {
+	        EmpEntity empDto = new EmpEntity();
+	        when(empService.updateEmp(empDto)).thenReturn(false);
+
+	        mockMvc.perform(MockMvcRequestBuilders.put("/updateEmp")
+	                .contentType(MediaType.APPLICATION_JSON)
+	                .content("{}")) // You can add the JSON content here
+	                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+	                .andExpect(MockMvcResultMatchers.content().string("Record not updated"));
+	    }
+
+	    @Test
+	    public void testUpdateEmpSuccess() throws Exception {
+	        EmpEntity empDto = new EmpEntity();
+	        when(empService.updateEmp(empDto)).thenReturn(true);
+
+	        mockMvc.perform(MockMvcRequestBuilders.put("/updateEmp")
+	               .contentType(MediaType.APPLICATION_JSON)
+	                .content("{}")) // You can add the JSON content here
+	                .andExpect(MockMvcResultMatchers.status().isOk())
+	                .andExpect(MockMvcResultMatchers.content().string("Record updated successfully"));
+	    }
+
+	    @Test
+	    public void testUpdateEmpFailure() throws Exception {
+	        EmpEntity empDto = new EmpEntity();
+	        when(empService.updateEmp(empDto)).thenReturn(false);
+
+	        mockMvc.perform(MockMvcRequestBuilders.put("/updateEmp")
+	                .contentType(MediaType.APPLICATION_JSON)
+	                .content("{}")) // You can add the JSON content here
+	                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+	                .andExpect(MockMvcResultMatchers.content().string("Record not updated"));
+	    }
+
+	    @Test
+	    public void testGetCourse_Positive() throws Exception {
+	        Integer empId = 1;
+	        EmpEntity empEntity = new EmpEntity(empId, "John", 50000.0);
+	        when(empService.getById(empId)).thenReturn(empEntity);
+
+	        mockMvc.perform(MockMvcRequestBuilders.get("/emp/{cid}", empId))
+	                .andExpect(MockMvcResultMatchers.status().isOk())
+	                .andExpect(MockMvcResultMatchers.jsonPath("$.empId").value(empId))
+	                .andExpect(MockMvcResultMatchers.jsonPath("$.empName").value("John"))
+	                .andExpect(MockMvcResultMatchers.jsonPath("$.empSal").value(50000.0));
+	    }
+
+	    @Test
+	    public void testGetCourseNegative() throws Exception {
+	        Integer empId = 1;
+	        when(empService.getById(empId)).thenReturn(null);
+
+	        mockMvc.perform(MockMvcRequestBuilders.get("/emp/{cid}", empId))
+	                .andExpect(MockMvcResultMatchers.status().isOk())
+	                .andExpect(MockMvcResultMatchers.content().string(""));
+	    }
+
+	    @Test
+	    public void testGetAllCoursesPositive() throws Exception {
+	        EmpEntity emp1 = new EmpEntity(1, "John", 50000.0);
+	        EmpEntity emp2 = new EmpEntity(2, "Jane", 60000.0);
+	        List<EmpEntity> expectedEmpList = new ArrayList<>(Arrays.asList(emp1, emp2));
+
+	        when(empService.getAllEmps()).thenReturn(expectedEmpList);
+
+	        mockMvc.perform(MockMvcRequestBuilders.get("/emp"))
+	                .andExpect(MockMvcResultMatchers.status().isOk())
+	                .andExpect(MockMvcResultMatchers.jsonPath("$[0].empId").value(1))
+	                .andExpect(MockMvcResultMatchers.jsonPath("$[0].empName").value("John"))
+	                .andExpect(MockMvcResultMatchers.jsonPath("$[0].empSal").value(50000.0))
+	                .andExpect(MockMvcResultMatchers.jsonPath("$[1].empId").value(2))
+	                .andExpect(MockMvcResultMatchers.jsonPath("$[1].empName").value("Jane"))
+	                .andExpect(MockMvcResultMatchers.jsonPath("$[1].empSal").value(60000.0));
+	    }
+
+	    @Test
+	    public void testGetAllCoursesEmptyList() throws Exception {
+	        when(empService.getAllEmps()).thenReturn(new ArrayList<>());
+
+	        mockMvc.perform(MockMvcRequestBuilders.get("/emp"))
+	                .andExpect(MockMvcResultMatchers.status().isOk())
+	                .andExpect(MockMvcResultMatchers.content().string("[]"));
+	    }
+
+	    @Test
+	    public void testDeleteCourseSuccess() throws Exception {
+	        Integer empId = 1;
+	        String successMessage = "Employee deleted successfully";
+	        when(empService.deleteByEmpId(empId)).thenReturn(successMessage);
+
+	        mockMvc.perform(MockMvcRequestBuilders.delete("/emp/{cid}", empId))
+	                .andExpect(MockMvcResultMatchers.status().isOk())
+	                .andExpect(MockMvcResultMatchers.content().string(successMessage));
+	    }
+
+	    @Test
+	    public void testDeleteCourseNotFound() throws Exception {
+	        Integer empId = 1;
+	        String notFoundMessage = "Employee with empId not found";
+	        when(empService.deleteByEmpId(empId)).thenReturn(notFoundMessage);
+
+	        mockMvc.perform(MockMvcRequestBuilders.delete("/course/{cid}", empId))
+	                .andExpect(MockMvcResultMatchers.status().isOk())
+	                .andExpect(MockMvcResultMatchers.content().string(notFoundMessage));
+	    }
+
+
+	}
+
+	
+  

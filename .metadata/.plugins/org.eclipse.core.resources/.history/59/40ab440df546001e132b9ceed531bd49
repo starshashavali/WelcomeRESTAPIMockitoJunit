@@ -1,0 +1,39 @@
+package in.gis.test;
+
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import in.gis.binding.Course;
+import in.gis.repo.CourseRepository;
+import in.gis.service.CourseServiceImpl;
+
+@SpringBootTest
+public class CourseServiceImplTest {
+	   @InjectMocks
+	    private   CourseServiceImpl courseServiceImpl ;
+	    @Mock
+	    private CourseRepository courseRepository;
+	    @Test
+	    void testCourseSave() {
+	    	Course course=new Course();
+	    	course.setCid(100);
+	    	course.setName("Java");
+	    	course.setPrice(99.9);
+	    	courseServiceImpl.upsert(course);
+	        Mockito.verify(courseRepository,Mockito.times(1)).save(course);
+
+	    }
+	    @Test
+	    void testUpdateCourse() {
+	    	Course course =new Course();
+	    	course.setCid(100);
+	    	course.setName("Java");
+	    	course.setPrice(99.9);
+	    	courseServiceImpl.upsert(course);
+	        Mockito.verify(courseRepository,Mockito.times(1)).save(course);
+	    }
+
+}

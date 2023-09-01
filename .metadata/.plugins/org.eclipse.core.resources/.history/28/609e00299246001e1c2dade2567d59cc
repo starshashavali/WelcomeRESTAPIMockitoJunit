@@ -1,0 +1,12 @@
+package com.gis.binding;
+
+import lombok.Data;
+
+@Data
+public class CountryBinding {
+	
+	
+	private String cname;
+	private String ccode;
+
+}

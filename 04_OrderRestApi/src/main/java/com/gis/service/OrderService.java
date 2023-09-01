@@ -1,0 +1,17 @@
+package com.gis.service;
+
+import java.util.List;
+
+import com.gis.entity.OrderEntity;
+
+public interface OrderService {
+
+	public boolean upsert(OrderEntity orderEntity);
+
+	public OrderEntity getByOrderId(Integer id);
+
+	public List<OrderEntity> getAllOrders();
+
+	public boolean deleteOrderById(Integer id);
+
+}

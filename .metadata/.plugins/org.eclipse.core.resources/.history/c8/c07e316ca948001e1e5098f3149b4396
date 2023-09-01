@@ -1,0 +1,133 @@
+package com.gis.test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.ResultMatcher;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gis.entity.BookEntity;
+import com.gis.restcontroller.BookRestController;
+import com.gis.service.BookService;
+
+@WebMvcTest(value = BookRestController.class)
+public class BookRestControllerTest {
+	@MockBean
+	private BookService bookService;
+
+	@Autowired
+	private MockMvc mockMvc;
+
+	@Test
+	public void testPositiveSavedBookRecord() throws Exception {
+
+		when(bookService.saveBook(ArgumentMatchers.any())).thenReturn(true);
+		
+		
+		BookEntity bookEntity = new BookEntity(109, "Amani", 899.9);
+		ObjectMapper mapper = new ObjectMapper();
+		String writeValueAsString = mapper.writeValueAsString(bookEntity);
+
+		
+
+		int status = mockMvc.perform(MockMvcRequestBuilders.post("/saveBook")
+				.contentType(MediaType.APPLICATION_JSON).
+				content(writeValueAsString)).
+				andReturn().getResponse().getStatus();
+		assertEquals(201, status);
+
+	}
+	
+
+	@Test
+	public void testNegativeSavedBookRecord() throws Exception {
+
+		when(bookService.saveBook(ArgumentMatchers.any())).thenReturn(false);
+
+		BookEntity bookEntity = new BookEntity(109, "Amani", 899.9);
+		ObjectMapper mapper = new ObjectMapper();
+		String writeValueAsString = mapper.writeValueAsString(bookEntity);
+
+		int status = mockMvc.perform( MockMvcRequestBuilders.post("/saveBook")
+				.contentType(MediaType.APPLICATION_JSON).
+				content(writeValueAsString)).
+				andReturn().getResponse().getStatus();
+		assertEquals(400, status);
+
+	}
+	@Test
+	public void testGetBookByIdPositive() throws Exception {
+		BookEntity entity= new BookEntity(1,"Life",99.8);
+		
+		when(bookService.getBookId(1)).thenReturn(entity);
+		
+		mockMvc.perform(MockMvcRequestBuilders.get("/getBook/{id}",1))
+		.andExpect(status().isOk());
+		/*.andExpect(jsonPath("$.bookId").value(1))
+		.andExpect(jsonPath("$.bookName").value("Life"))
+		.andExpect(jsonPath("$.bookPrice").value(99.8));*/
+	}
+	@Test
+	public void testBookByIdNegative() throws Exception {
+		BookEntity entity= new BookEntity(-1,"Java",99.8);
+		when(bookService.getBookId(-1)).thenReturn(entity);
+		mockMvc.perform(MockMvcRequestBuilders.get("/getBook/{id}",-1))
+		.andExpect(status().isOk());
+	/*	.andExpect(jsonPath("$.bookId").value(-1))
+		.andExpect(jsonPath("$.bookName").value("Java"))
+		.andExpect(jsonPath("$.bookPrice").value(99.8));
+		*/
+	}
+	@Test
+	public void testDeleteByIdPositive() throws Exception {
+
+		when(bookService.deleteBookById(1)).thenReturn("success");
+		mockMvc.perform(MockMvcRequestBuilders.delete("/deleteById/{id}",1))
+		.andExpect(status().isOk());
+	}
+	@Test
+	public void testDeleteByIdNegative() throws Exception{
+		when(bookService.deleteBookById(-1)).thenReturn("success");
+		mockMvc.perform(MockMvcRequestBuilders.delete("/deleteById/{id}",-1))
+		.andExpect(status().isOk());
+	}
+	@Test
+	public void testPositiveGetAllBookDtls() throws Exception {
+		List<BookEntity> arrayList = new ArrayList<BookEntity>();
+	 arrayList.add(new BookEntity(1,"java",99.9));
+		arrayList.add(new BookEntity(2,"Python",89.9));
+		when(bookService.getAllBooks()).thenReturn(arrayList);
+		
+		mockMvc.perform(MockMvcRequestBuilders.get("/getAllBooks"))
+		.andExpect(status().isOk());
+		//.andExpect(jsonPath("$.length()").value(2));
+		
+	}
+	@Test
+	public void testNegativeGetAllBookDtls() throws Exception {
+		ArrayList<BookEntity> arrayList = new ArrayList<>();
+		arrayList.add(new BookEntity(-1,"Java",99.8) );
+		arrayList.add(new BookEntity(-2,"python",89.8));
+		 when(bookService.getAllBooks()).thenReturn(arrayList);
+		 
+		 mockMvc.perform(MockMvcRequestBuilders.get("/getAllBooks"))
+		 .andExpect(status().isOk());
+		
+	}	
+	
+
+}

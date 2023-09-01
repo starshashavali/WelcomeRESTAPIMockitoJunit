@@ -1,0 +1,42 @@
+package com.gis.bean.test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import com.gis.bean.Calculator;
+
+public class CalculatorTest {
+	private Calculator static calculator = null;
+
+	@BeforeEach
+	public static void beforeAll() {
+		Calculator = new Calculator();
+
+	}
+
+	@AfterEach
+	public static void afterAll() {
+		Calculator = null;
+	}
+
+	@Test
+	public void testAddNum() {
+		Integer actualResult = Calculator.addNum(10, 20);
+		Integer exceptedResult = 30;
+		assertEquals(exceptedResult, actualResult);
+	}
+
+	@Test
+	public void testMultiplicatinNumber() {
+		Integer actualResult = Calculator.multiplicatinNumber(3, 3);
+		Integer exceptedResult = 9;
+		assertEquals(exceptedResult, actualResult);
+
+	}
+
+}

@@ -1,0 +1,80 @@
+package in.gis.test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
+
+import java.util.Optional;
+
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import in.gis.binding.Course;
+import in.gis.repo.CourseRepository;
+import in.gis.service.CourseServiceImpl;
+
+@SpringBootTest
+public class CourseServiceImplTest {
+	@InjectMocks
+	private CourseServiceImpl courseServiceImpl;
+	@Mock
+	private CourseRepository courseRepository;
+
+	@Test
+	void testCourseSave() {
+		Course course = new Course();
+		course.setCid(100);
+		course.setName("Java");
+		course.setPrice(99.9);
+		courseServiceImpl.upsert(course);
+		Mockito.verify(courseRepository, Mockito.times(1)).save(course);
+
+	}
+
+	@Test
+	void testUpdateCourse() {
+		Course course = new Course(100, "Java", 669.9);
+		courseServiceImpl.upsert(course);
+		Mockito.verify(courseRepository, Mockito.times(1)).save(course);
+	}
+
+	@Test
+	void testGetByIdCourseExists() {
+		Integer id = 109;
+		// Arrange
+		Course course = new Course(id, ".Net", 399.9);
+		when(courseRepository.findById(1)).thenReturn(Optional.of(course));
+
+		// Act
+		Optional<Course> result = courseServiceImpl.getById(id);
+
+		// Assert
+		assertTrue(result.isPresent());
+		assertEquals(course, result.get());
+		Mockito.verify(courseRepository, Mockito.times(1)).findById(1);
+	}
+	/*
+	 * void testGetByIdCourse() { Integer id=199; Course course =new
+	 * Course(id,".Net",399.9);
+	 * 
+	 * Optional<Course>courseObjId=Optional.of(course);
+	 * Mockito.when(courseRepository.findById(id)).thenReturn(courseObjId);
+	 * Optional<Course>t=courseServiceImpl.getById(id)
+	 * Assertions.assertEquals(courseObjId,t);
+	 */
+
+	@Test
+	void deleteByIdCourse() {
+		Course course = new Course();
+		course.setCid(106);
+		course.setName("Python");
+		course.setPrice(999.0);
+		courseServiceImpl.deleteById(course.getCid());
+		Mockito.verify(courseRepository, Mockito.times(1));
+	}
+
+}

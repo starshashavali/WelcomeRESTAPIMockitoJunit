@@ -1,0 +1,9 @@
+package com.gis.binding;
+
+public class CountryBinding {
+	
+	
+	private String cname;
+	private String ccode;
+
+}

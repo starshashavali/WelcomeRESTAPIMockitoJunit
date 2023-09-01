@@ -1,0 +1,10 @@
+package com.gis.entity;
+
+public class ProductEntity {
+	
+	private Integer pid;
+	private String pname;
+	private Double price;
+	
+
+}

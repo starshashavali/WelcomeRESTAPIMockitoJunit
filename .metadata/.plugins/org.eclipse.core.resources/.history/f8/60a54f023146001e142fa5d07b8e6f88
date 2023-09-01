@@ -1,0 +1,24 @@
+package com.gis.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.gis.entity.ProductEntity;
+import com.gis.service.ProductService;
+
+@RestController
+public class ProductController {
+	@Autowired
+	private ProductService productService;
+
+	   @PutMapping("/{id}")
+	    public ResponseEntity<ProductEntity> updateProduct(@PathVariable Integer id, @RequestBody ProductEntity product) {
+	        ProductEntity updatedProduct = productService.updateProduct(id, product);
+	        return ResponseEntity.ok(updatedProduct);
+
+}
+}

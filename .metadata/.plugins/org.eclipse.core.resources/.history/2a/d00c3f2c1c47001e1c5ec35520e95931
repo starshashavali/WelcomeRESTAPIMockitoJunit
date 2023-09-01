@@ -1,0 +1,104 @@
+package in.gis.test;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.web.servlet.MockMvc;
+
+import in.gis.binding.Course;
+import in.gis.rest.CourseRestController;
+import in.gis.service.CourseService;
+
+@WebMvcTest
+public class CourseRestControllerTest {
+	@Autowired
+	private MockMvc mockMvc;
+	@MockBean
+	private CourseService courseService;
+
+    @InjectMocks
+    private CourseRestController  courseRestController ;
+
+ 
+
+    @Test
+    public void testCreateCourse() {
+        Course course = new Course(/* Initialize course object */);
+        when(courseService.upsert(course)).thenReturn("Created");
+        
+        ResponseEntity<String> responseEntity = courseRestController.createCourse(course);
+        
+        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+        assertEquals("Created", responseEntity.getBody());
+        Mockito.verify(courseService,Mockito.times(1)).upsert(course);
+    }
+
+    @Test
+    public void testUpdateCourse() {
+        Course course = new Course(/* Initialize course object */);
+        when(courseService.upsert(course)).thenReturn("Updated");
+        
+        ResponseEntity<String> responseEntity = courseRestController.updateCourse(course);
+        
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals("Updated", responseEntity.getBody());
+        Mockito.verify(courseService,Mockito.times(1)).upsert(course);
+    }
+}
+	@Test
+	void testGetAllCourses() throws Exception {
+		// Arrange
+		List<Course> mockCourseList = new ArrayList<>();
+		mockCourseList.add(new Course(100, "Python", 669.9));
+		mockCourseList.add(new Course(101, "JSE", 666.9));
+		when(courseService.getAllCourses()).thenReturn(mockCourseList);
+
+		// Act & Assert
+		mockMvc.perform(get("/courses")).andExpect(status().isOk()).andExpect(jsonPath("$.length()").value(2)); // Assuming
+																												// JSON
+																												// array																										// is
+																												// returned
+	}
+
+	@Test
+	void testgetCourse() throws Exception {
+		Course mockCourse = new Course(1, "Python", 669.9);
+		when(courseService.getById(1)).thenReturn(mockCourse);
+
+		// Act & Assert
+		mockMvc.perform(get("/course/{cid}", 1).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+				.andExpect(jsonPath("$.cid").value(1)).andExpect(jsonPath("$.name").value("Python"))
+				.andExpect(jsonPath("$.price").value(669.9));
+	}
+	  @Test
+	    void testDeleteCourse() throws Exception {
+	        // Arrange
+	        when(courseService.deleteById(1)).thenReturn("Deleted successfully");
+
+	        // Act & Assert
+	        mockMvc.perform(delete("/course/{cid}", 1)
+	                .contentType(MediaType.APPLICATION_JSON))
+	            .andExpect(status().isOk())
+	            .andExpect(content().string("Deleted successfully"));
+	    }
+	
+
+}
